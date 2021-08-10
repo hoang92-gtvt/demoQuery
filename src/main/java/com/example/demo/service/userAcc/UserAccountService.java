@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class UserAccountService implements IUserAccountService{
@@ -57,14 +60,17 @@ public class UserAccountService implements IUserAccountService{
 
         Long newId = newAccount.getId();
 
-//        registerAccountRequest.getRole().stream().forEach(role->{
-//            User_Role  user_role = new User_Role(newId, role);
-//             user_role_repo.save(user_role)});
 
-        Long[] roleList = registerAccountRequest.getRole();
-        for (Long roleId:roleList) {
-            user_role_repo.save(new User_Role(newId, roleId));
-        }
+
+        Long[] roles = registerAccountRequest.getRole();
+        Arrays.stream(roles).forEach(role->{
+            user_role_repo.save(new User_Role(newId,role));
+        });
+
+//        Long[] roleList = registerAccountRequest.getRole();
+//        for (Long roleId:roleList) {
+//            user_role_repo.save(new User_Role(newId, roleId));
+//        }
 
 
     }
